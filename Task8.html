@@ -3,76 +3,107 @@
 <head>
   <meta charset="UTF-8">
   <title>Product Dashboard</title>
+
   <style>
     body {
-      font-family: Arial;
+      font-family: 'Segoe UI', sans-serif;
       margin: 0;
       padding: 20px;
-      background: #f5f5f5;
+      background: linear-gradient(135deg, #eef2f3, #dfe9f3);
     }
 
     h1 {
       text-align: center;
+      margin-bottom: 20px;
     }
 
+    /* CONTROLS */
     .controls {
       display: flex;
       gap: 10px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
       justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 25px;
     }
 
     input, select, button {
-      padding: 8px;
-      font-size: 14px;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
     }
 
+    button {
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    /* GRID */
     .products {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 25px;
     }
 
+    /* CARD */
     .card {
-      background: white;
-      padding: 15px;
-      border-radius: 10px;
+      background: rgba(255,255,255,0.8);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      overflow: hidden;
       transition: 0.3s;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      position: relative;
     }
 
     .card:hover {
-      transform: scale(1.03);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
     }
 
     .card img {
       width: 100%;
-      height: 150px;
+      height: 180px;
       object-fit: contain;
+      transition: 0.4s;
     }
 
+    .card:hover img {
+      transform: scale(1.1);
+    }
+
+    .card h4 {
+      margin: 10px;
+      font-size: 16px;
+    }
+
+    .card p {
+      margin: 0 10px;
+      font-size: 13px;
+      color: #555;
+    }
+
+    /* BUTTONS */
     .price-btn {
-      background: black;
+      background: linear-gradient(135deg, black, #444);
       color: white;
-      padding: 8px;
       border: none;
-      margin-top: 10px;
-      cursor: pointer;
-      width: 100%;
+      padding: 10px;
+      margin: 10px;
+      border-radius: 8px;
+      width: calc(100% - 20px);
     }
 
     .view-btn {
-      background: teal;
+      background: linear-gradient(135deg, teal, #00b3b3);
       color: white;
-      padding: 8px;
       border: none;
-      margin-top: 5px;
-      cursor: pointer;
-      width: 100%;
+      padding: 10px;
+      margin: 0 10px 15px;
+      border-radius: 8px;
+      width: calc(100% - 20px);
     }
 
+    /* LOADER + ERROR */
     #loader {
       text-align: center;
       font-size: 20px;
@@ -83,7 +114,7 @@
       color: red;
     }
 
-    /* Modal */
+    /* MODAL */
     .modal {
       position: fixed;
       top: 0;
@@ -101,6 +132,7 @@
       padding: 20px;
       border-radius: 10px;
       width: 300px;
+      text-align: center;
     }
 
     .close {
@@ -108,15 +140,33 @@
       cursor: pointer;
       font-size: 20px;
     }
+
+    .modal img {
+      width: 100%;
+      height: 200px;
+      object-fit: contain;
+    }
+
+    /* BADGE */
+    .badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: crimson;
+      color: white;
+      font-size: 10px;
+      padding: 4px 8px;
+      border-radius: 5px;
+    }
   </style>
 </head>
 <body>
 
-<h1>Product Dashboard</h1>
+<h1>🛍 Product Dashboard</h1>
 
 <div class="controls">
-  <input type="text" id="search" placeholder="Search products..." />
-  
+  <input type="text" id="search" placeholder="Search products...">
+
   <select id="category">
     <option value="">All Categories</option>
     <option value="electronics">Electronics</option>
@@ -131,14 +181,15 @@
 
 <div id="loader">Loading...</div>
 <div id="error"></div>
+
 <div class="products" id="productContainer"></div>
 
-<!-- Modal -->
+<!-- MODAL -->
 <div class="modal" id="modal">
   <div class="modal-content">
     <span class="close" onclick="closeModal()">×</span>
     <h3 id="modalTitle"></h3>
-    <img id="modalImage" style="width:100%">
+    <img id="modalImage">
     <p id="modalDesc"></p>
     <p id="modalPrice"></p>
   </div>

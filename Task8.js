@@ -5,7 +5,7 @@ const container = document.getElementById("productContainer");
 const loader = document.getElementById("loader");
 const errorDiv = document.getElementById("error");
 
-// Fetch API
+// FETCH DATA
 async function fetchProducts() {
   try {
     loader.style.display = "block";
@@ -25,7 +25,7 @@ async function fetchProducts() {
   }
 }
 
-// Display products
+// DISPLAY PRODUCTS
 function displayProducts(data) {
   container.innerHTML = "";
 
@@ -34,6 +34,7 @@ function displayProducts(data) {
     card.className = "card";
 
     card.innerHTML = `
+      <span class="badge">NEW</span>
       <img src="${p.image}">
       <h4>${p.title.slice(0, 20)}</h4>
       <p>${p.description.slice(0, 60)}...</p>
@@ -45,7 +46,7 @@ function displayProducts(data) {
   });
 }
 
-// Search filter
+// SEARCH
 document.getElementById("search").addEventListener("input", (e) => {
   const value = e.target.value.toLowerCase();
 
@@ -56,20 +57,18 @@ document.getElementById("search").addEventListener("input", (e) => {
   displayProducts(filteredProducts);
 });
 
-// Category filter
+// CATEGORY FILTER
 document.getElementById("category").addEventListener("change", (e) => {
   const value = e.target.value;
 
-  if (!value) {
-    filteredProducts = [...products];
-  } else {
-    filteredProducts = products.filter(p => p.category === value);
-  }
+  filteredProducts = value
+    ? products.filter(p => p.category === value)
+    : [...products];
 
   displayProducts(filteredProducts);
 });
 
-// Sorting
+// SORT
 function sortProducts(type) {
   let sorted = [...filteredProducts];
 
@@ -82,14 +81,14 @@ function sortProducts(type) {
   displayProducts(sorted);
 }
 
-// View details (modal)
+// MODAL
 function viewDetails(id) {
   const product = products.find(p => p.id === id);
 
   document.getElementById("modalTitle").innerText = product.title;
   document.getElementById("modalImage").src = product.image;
   document.getElementById("modalDesc").innerText = product.description;
-  document.getElementById("modalPrice").innerText = "Price: ₹ " + product.price;
+  document.getElementById("modalPrice").innerText = "₹ " + product.price;
 
   document.getElementById("modal").style.display = "flex";
 }
@@ -98,5 +97,5 @@ function closeModal() {
   document.getElementById("modal").style.display = "none";
 }
 
-// Init
+// INIT
 fetchProducts();
